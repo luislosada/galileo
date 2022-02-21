@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/tiempostyle.css">
+    <script src="./sources/jquery-3.6.0.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="contenedor noche dia">
+        <div class="entradaDatos">
+            <form action="">
+                <input type="text" placeholder="Introduce una ciudad" id="txtCiudad">
+                <div id="countries"></div>
+            </form>
+        </div>
+        <div class="temperatura">
+            <div id="temperaturaValor"></div>
+            <div class="temperaturaMagnitud">ºC</div>
+
+        </div>
+        <div class="estado">
+            <div id="estadoIcono"></div>
+            <div id="estadoDescripcion"></div>
+        </div>
+        <div class="ubicacion">
+            <div id="ubicacionNombre"></div>
+        </div>
+        <div class="minMaxTemp">
+            <div class="minTemp"><span>min</span><span id="minValor"></span><span>ºC</span></div>
+            <div class="maxTemp"><span>max</span><span id="maxValor"></span><span>ºC</span></div>
+        </div>
+    </div>
+    <script src="./scripts/tiempo.js"></script>
+</body>
+</html>

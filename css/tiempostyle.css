@@ -1,0 +1,39 @@
+*{
+    margin:0;
+    box-sizing: border-box;
+}
+.contenedor{
+    width: 50vw;
+    height: 50vh;
+    border: 3px solid green;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.contenedor.noche{
+    background-image: url("../img/night.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.contenedor.dia{
+    background-image: url("../img/day.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.entradaDatos, .temperatura, .estado, .ubicacion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ubicacion{
+    font-weight: bold;
+}
+.temperatura{
+    letter-spacing: .1rem;
+    
+    font-weight: bold;
+}
+#txtCiudad{
+    border-radius: 5px;
+    padding: .4rem;
+}
