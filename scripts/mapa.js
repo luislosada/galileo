@@ -1,5 +1,9 @@
-import {latitud,longitud} from './tiempo';
-if(latitud!=undefined || latitud!=null){
+
+export function generarMapa(latitud, longitud) {
+  console.log("Entro en mapa.js");
+console.log("El valor de latitud es "+latitud);
+console.log("Entro en mapa.js");
+console.log("Entro en la condicion (no undefined)")
     let map = L.map("map").setView([41.66, -4.72], 5);
 
     L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {

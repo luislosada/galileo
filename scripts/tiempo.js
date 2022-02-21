@@ -1,4 +1,5 @@
-//let promesa=fetch(`api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=75e1a2b621msh0db007956fd515fp1720abjsn45f1ff299af0`);
+import {generarMapa} from './mapa.js';
+
 let getData = (city) => {
   //let promesa = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=477d915fc69ba945df49fb7d329449ad`);
   //https://openweathermap.org/weather-conditions#How-to-get-icon-URL
@@ -165,7 +166,7 @@ let getData = (city) => {
       estadoDescripcion.innerText = estado;
 
       estadoIcono.innerHTML = `<img src=https://openweathermap.org/img/w/${estadoIcon}.png>`;
-      export { latitud, longitud };
+     generarMapa(latitud,longitud);
     }
     }
   
