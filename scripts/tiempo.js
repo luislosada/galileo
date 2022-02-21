@@ -54,11 +54,7 @@ let getData = (city) => {
             //que cargue el select cuando se haya encontrado 1 o + ciudades
             if(ciudadesUnicas.length>0){
               cargarSelect();
-              let seleccionUsuario=getOptions();
-                if(seleccionUsuario!="Seleccione una ciudad"){
-                  idBuscado=seleccionUsuario;
-                  consultaAPI(idBuscado);
-                }
+              getOptions();
 
             }else{
               console.log("CIUDAD NO ENCONTRADA");
@@ -97,35 +93,31 @@ let getData = (city) => {
       let tamanio = $("option").length;
       console.log("NUMERO DE OPTIONS " + tamanio);
       let key;
-      if($("#seleccion").val()!="Seleccione una ciudad"){
 
-      }
-      switch (true) {
-       
-        case tamanio == 1:
-          console.log("SOLO UNA OPCION");
+      if(tamanio == 1){
+        console.log("SOLO UNA OPCION");
           console.log("Su valor es " + $("#seleccion").val());
           key = $("#seleccion").val();
-          break;
-
-        default:
-          //mas de una opcion
-          console.log("ENTRO EN VARIAS OPCIONES");
-          // Añadimos el primer item ("Seleccione una ciudad")
-          $("#seleccion").prepend(
-            "<option selected >Seleccione una ciudad</option>"
-          );
-
-          let cityID = $("#seleccion").val();
-          console.log("Seleccion multiple x defecto - " + cityID);
-          $("#seleccion").click(function () {
-            let cityID = $("#seleccion").val();
-            console.log("You have selected the country - " + cityID);
-            key = $("#seleccion").val();
-          });
-          break;
+          consultaAPI(key);;
       }
-      return key;
+      else{
+        //mas de una opcion
+        console.log("ENTRO EN VARIAS OPCIONES");
+        // Añadimos el primer item ("Seleccione una ciudad")
+        $("#seleccion").prepend(
+          "<option selected >Seleccione una ciudad</option>"
+        );
+        
+        $("#seleccion").change(function () {
+          let cityID = $("#seleccion").val();
+          console.log("You have selected the country - " + cityID);
+          key = $("#seleccion").val();
+          console.log(key);
+          consultaAPI(key);
+        });
+      }
+      
+      
     }
     function consultaAPI(cityID) {
 
@@ -157,6 +149,12 @@ let getData = (city) => {
       let temperaturaMin = respuesta.main.temp_min;
       let temperaturaMax = respuesta.main.temp_max;
       let estado = respuesta.weather[0].description;
+      let latitud=respuesta.coord.lat;
+      let longitud=respuesta.coord.lon;
+      console.log("LATITUD");
+      console.log(latitud)
+      console.log("LONGITUD");
+      console.log(longitud);
 
       let estadoIcon = respuesta.weather[0].icon;
       //pintar datos
@@ -167,73 +165,24 @@ let getData = (city) => {
       estadoDescripcion.innerText = estado;
 
       estadoIcono.innerHTML = `<img src=https://openweathermap.org/img/w/${estadoIcon}.png>`;
-      //$('.estado').append('<h2>REMPLAZO con html()</h2>');
+      export { latitud, longitud };
     }
     }
-    
+  
+  
   
 
-  // if($("option").length==1){
-  //   console.log('SOLO UNA OPCION');
-  //   console.log('Su valor es '+$("#seleccion").val());
-
-  // }
-
-  /*$("#seleccion").change(function () {
-      let cityID = $("#seleccion").val();
-      console.log("You have selected the country - " + cityID);
   
-      let promesa = fetch(
-        `https://api.openweathermap.org/data/2.5/weather?id=${cityID}&units=metric&lang=sp&APPID=477d915fc69ba945df49fb7d329449ad`
-      );
-    
-      promesa.then(correcta).then(tratamiento);
-      promesa.catch(() => console.log("error"));
-      function correcta(respuesta) {
-        console.log("LA RESPUESTA ES");
-        console.log(respuesta);
-        console.log("MODIFICANDO LA RESPUESTA");
-        console.log(respuesta.status);
-        if (respuesta.status !== 200) {
-          console.log("CIUDAD NO ENCONTRADA");
-        }
-    
-        return respuesta.json();
-      }
-      function tratamiento(respuesta) {
-        //tratamientod de los datos recibidos
-        console.log(promesa);
-        console.log(respuesta);
-        let temperatura = respuesta.main.temp;
-        let ciudad = respuesta.name;
-        let pais = respuesta.sys.country;
-        let temperaturaMin = respuesta.main.temp_min;
-        let temperaturaMax = respuesta.main.temp_max;
-        let estado = respuesta.weather[0].description;
-    
-        let estadoIcon = respuesta.weather[0].icon;
-        //pintar datos
-        temperaturaValor.innerText = temperatura;
-        ubicacionNombre.innerText = ciudad + ", " + pais;
-        minValor.innerText = temperaturaMin;
-        maxValor.innerText = temperaturaMax;
-        estadoDescripcion.innerText = estado;
-    
-        estadoIcono.innerHTML = `<img src=https://openweathermap.org/img/w/${estadoIcon}.png>`;
-        //$('.estado').append('<h2>REMPLAZO con html()</h2>');
-      }
-    });*/
-
-  //let promesa = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=sp&APPID=477d915fc69ba945df49fb7d329449ad`);
 };
 window.onload = () => {
   let ciudadBuscada = document.querySelector("#txtCiudad").value;
 
-  getData("Barcelona");
+  getData("Valladolid");
   txtCiudad.addEventListener("change", getDataUser);
   function getDataUser(evento) {
     let valor = evento.target.value;
 
     getData(valor);
   }
+
 };
