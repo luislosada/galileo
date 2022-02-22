@@ -1,12 +1,15 @@
 import {generarMapa} from './mapa.js';
-
+let mapa; /*La variable mapa debe estar fuera del ambito de la funcion global
+para que en cada busqueda recuerde la instancia generada y pueda removerla por la nueva
+No se puede destruir algo que no ha existido */
 let getData = (city) => {
-  //let promesa = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=477d915fc69ba945df49fb7d329449ad`);
-  //https://openweathermap.org/weather-conditions#How-to-get-icon-URL
-  //++++++let promesa = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=sp&APPID=477d915fc69ba945df49fb7d329449ad`);
+  console.log("EL valor de mapa es :")
+      console.log(mapa);
   //Contrastamos la info introducida x teclado con el fichero de ciudades json
+
   let ciudadesUnicas;
   let idBuscado;
+ 
   let promesa2 = fetch(`./sources/city.list.json`);
   promesa2.then(correcta2).then(tratamiento2);
   promesa2.catch(() => console.log("error"));
@@ -23,8 +26,12 @@ let getData = (city) => {
     }
           function tratamiento2(respuesta) {
             //tratamientod de los datos recibidos
+
             console.log("TRATAMIENTO LECTURA FICHERO JSON");
             let cityMatches = [];
+            let cityMatchesUnique = [];
+            let paisesAnadidos = [];
+            
             respuesta.forEach((ciudad) => {
               if (!cityMatches.includes(ciudad.name) && ciudad.name == city) {
                 cityMatches.push(ciudad);
@@ -32,8 +39,7 @@ let getData = (city) => {
             });
             console.log("Ciudades Encontradas ");
             console.log(cityMatches);
-            let cityMatchesUnique = [];
-            let paisesAnadidos = [];
+           
             cityMatches.forEach((item, i) => {
               if (i == 0) {
                 paisesAnadidos.push(item.country);
@@ -99,6 +105,7 @@ let getData = (city) => {
         console.log("SOLO UNA OPCION");
           console.log("Su valor es " + $("#seleccion").val());
           key = $("#seleccion").val();
+          $("#seleccion").css('visibility','hidden');
           consultaAPI(key);;
       }
       else{
@@ -110,17 +117,24 @@ let getData = (city) => {
         );
         
         $("#seleccion").change(function () {
+          console.log("-------------------------------- ")
+          console.log("LINEA 116, CADA VEZ QUE ELEGIMOS OPCIONES EMPIEZA AQUI ")
           let cityID = $("#seleccion").val();
           console.log("You have selected the country - " + cityID);
           key = $("#seleccion").val();
           console.log(key);
+          console.log('mapa:');
+          console.log(mapa);
+
           consultaAPI(key);
         });
       }
       
       
     }
+    
     function consultaAPI(cityID) {
+      console.log("Entro en metodo consultaAPI()")
 
     console.log("linea antes de llamar a promesa, CITYID VALE " + cityID);
     let promesa = fetch(
@@ -141,9 +155,16 @@ let getData = (city) => {
       return respuesta.json();
     }
     function tratamiento(respuesta) {
+      console.log('Entro en tratamiento()');
       //tratamientod de los datos recibidos
       console.log(promesa);
       console.log(respuesta);
+      console.log("******GESTION DEL TIEMPO******");
+      console.log(respuesta.dt)
+      console.log("****************");
+      let fechaEspaña=new Date(respuesta.dt*1000).toLocaleString('es-ES');
+      console.log("***FORMATEAR FECHA DE RESPUESTA A ESPAÑA***");
+      console.log(fechaEspaña)
       let temperatura = respuesta.main.temp;
       let ciudad = respuesta.name;
       let pais = respuesta.sys.country;
@@ -165,8 +186,30 @@ let getData = (city) => {
       maxValor.innerText = temperaturaMax;
       estadoDescripcion.innerText = estado;
 
-      estadoIcono.innerHTML = `<img src=https://openweathermap.org/img/w/${estadoIcon}.png>`;
-     generarMapa(latitud,longitud);
+      estadoIcono.innerHTML = `<img src=./img/iconos/${estadoIcon}.png>`;
+      console.log("****COMPROBAMOS SI HAY MAPA ANTES INVOC");
+      console.log("EL valor de mapa es :")
+      console.log(mapa);
+      
+      if($('#map').hasClass('leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom')){
+        console.log("TIENE LA CLASE DEL LEAFT");
+        console.log(mapa);
+        if(mapa!=undefined){
+          console.log('ES DISTINTO DE UNDEFINED')
+          mapa.off();
+          mapa.remove();
+        }
+        
+      }
+      console.log($('#map'));
+      console.log(mapa);
+      $('#map').fadeIn().css('position','absolute').css('right','.3%').css('bottom','0%').css('display','block');
+
+     mapa=generarMapa(latitud,longitud);
+     console.log("despues INVOC");
+     console.log($('#map'));
+
+
     }
     }
   
@@ -177,13 +220,19 @@ let getData = (city) => {
 };
 window.onload = () => {
   let ciudadBuscada = document.querySelector("#txtCiudad").value;
+//3106672
+  getData("3106672");
 
-  getData("Valladolid");
   txtCiudad.addEventListener("change", getDataUser);
   function getDataUser(evento) {
     let valor = evento.target.value;
-
-    getData(valor);
+   
+    let value=  $('#txtCiudad').val();
+let inicial=value.charAt(0).toUpperCase();
+let cadena=value.slice(1);
+console.log(inicial)
+console.log(cadena)
+    getData(inicial+cadena);
   }
 
 };

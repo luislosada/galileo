@@ -13,15 +13,18 @@
     />
     <style>
         #map { 
-          width: 400px;
-          height: 400px;
-          box-shadow: 5px 5px 5px #888;
+          width: 300px;
+          height: 300px;
+          display: none;
+          border-radius: 30px;
+   
        }
       </style>
     <title>Document</title>
   </head>
   <body>
     <div class="contenedor noche dia">
+      <h1>u app del tiempo de confianza</h1>
       <div class="entradaDatos">
         <form action="">
           <input
@@ -45,14 +48,15 @@
       </div>
       <div class="minMaxTemp">
         <div class="minTemp">
-          <span>min</span><span id="minValor"></span><span>ºC</span>
+          <span>min </span><span id="minValor"></span><span>ºC</span>
         </div>
         <div class="maxTemp">
-          <span>max</span><span id="maxValor"></span><span>ºC</span>
+          <span>max </span><span id="maxValor"></span><span>ºC</span>
         </div>
       </div>
+      <div id="map"></div>
     </div>
-    <div id="map"></div>
+    
     <script type="module" src="./scripts/tiempo.js"></script>
     <!-- <script  src="./scripts/mapa.js"></script> -->
   
